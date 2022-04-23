@@ -1,11 +1,54 @@
 import { arg, nonNull, stringArg, intArg, booleanArg, list } from 'nexus';
 import { ObjectDefinitionBlock } from 'nexus/dist/core';
 
-import { Goal, UserSession, GoalEstimate } from '../types';
+import { Goal, UserSession, GoalEstimate, computeUserFields, withComputedField } from '../types';
 // import { mailServer } from '../src/utils/mailServer';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const query = (t: ObjectDefinitionBlock<'Query'>) => {};
+export const query = (t: ObjectDefinitionBlock<'Query'>) => {
+    t.list.field('goalUserIndex', {
+        type: Goal,
+        args: {
+            user: nonNull(UserSession),
+        },
+        resolve: async (_, { user }, { db }) => {
+            const validUser = await db.user.findUnique({ where: { id: user.id } });
+
+            if (!validUser || !validUser.activityId) return null;
+
+            const goals = await db.goal.findMany({
+                where: {
+                    OR: [
+                        {
+                            issuerId: validUser.activityId,
+                        },
+                        {
+                            ownerId: validUser.activityId,
+                        },
+                        {
+                            participants: {
+                                some: {
+                                    id: validUser.activityId,
+                                },
+                            },
+                        },
+                    ],
+                },
+                include: {
+                    owner: {
+                        ...computeUserFields,
+                    },
+                    issuer: {
+                        ...computeUserFields,
+                    },
+                    tags: true,
+                    state: true,
+                },
+            });
+
+            return goals.map(withComputedField('owner', 'issuer'));
+        },
+    });
+};
 
 export const mutation = (t: ObjectDefinitionBlock<'Mutation'>) => {
     t.field('createGoal', {

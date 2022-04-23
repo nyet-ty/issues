@@ -44,6 +44,7 @@ type Ghost {
 
 type Goal {
   blocks: [Goal]
+  computedIssuer: UserAnyKind
   computedOwner: UserAnyKind
   connected: [Goal]
   createdAt: DateTime!
@@ -101,6 +102,7 @@ type Query {
   flow(id: String!): Flow
   flowCompletion(query: String!, sortBy: SortOrder): [Flow]
   flowRecommended: [Flow]
+  goalUserIndex(user: UserSession!): [Goal]
   project(slug: String!): Project
   projectCompletion(query: String!, sortBy: SortOrder): [Project]
   projectGoals(slug: String!): [Goal]

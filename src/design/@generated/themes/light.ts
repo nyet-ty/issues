@@ -64,5 +64,6 @@ export default createGlobalStyle`
         --keyboard-text-color: rgba(0, 0, 0, .6);
         --keyboard-background-color: rgba(0, 0, 0, .05);
         --keyboard-border-color: rgba(0, 0, 0, .1);
+        --search-bar-background: rgba(0, 0, 0, .4);
     }
 `;

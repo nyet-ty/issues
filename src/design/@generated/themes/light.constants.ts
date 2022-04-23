@@ -60,3 +60,4 @@ export const accentIconColor = '#ffed00';
 export const keyboardTextColor = 'rgba(0, 0, 0, .6)';
 export const keyboardBackgroundColor = 'rgba(0, 0, 0, .05)';
 export const keyboardBorderColor = 'rgba(0, 0, 0, .1)';
+export const searchBarBackground = 'rgba(0, 0, 0, .4)';

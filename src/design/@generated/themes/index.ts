@@ -60,3 +60,4 @@ export const accentIconColor = 'var(--accent-icon-color)';
 export const keyboardTextColor = 'var(--keyboard-text-color)';
 export const keyboardBackgroundColor = 'var(--keyboard-background-color)';
 export const keyboardBorderColor = 'var(--keyboard-border-color)';
+export const searchBarBackground = 'var(--search-bar-background)';
